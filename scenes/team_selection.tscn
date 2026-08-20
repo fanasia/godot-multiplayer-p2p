@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://coxa0vm4rkwmu"]
+
+[ext_resource type="Script" uid="uid://cqi62tra4y1qk" path="res://scripts/team_selection.gd" id="1_oie76"]
+
+[node name="TeamSelection" type="Control" unique_id=1530577895]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oie76")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1164274078]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TeamSelectionLabel" type="Label" parent="VBoxContainer" unique_id=279434033]
+layout_mode = 2
+text = "SELECT YOUR TEAM"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1914854704]
+layout_mode = 2
+
+[node name="TeamBlueButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=694608236]
+layout_mode = 2
+text = "BLUE (DEFEND)"
+
+[node name="TeamRedButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=617840437]
+layout_mode = 2
+text = "RED (ATTACK)"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=1230089804]
+layout_mode = 2
+
+[node name="TeamBlueLabel" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=1208953820]
+layout_mode = 2
+
+[node name="TeamRedLabel" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=381702056]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=1695361346]
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/TeamBlueButton" to="." method="_on_team_blue_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/TeamRedButton" to="." method="_on_team_red_button_pressed"]
