@@ -14,6 +14,7 @@ func _ready() -> void:
 	_on_team_assignments_updated(NetworkManager.team_assignments)
 
 func _on_team_blue_button_pressed() -> void:
+	# send message request team("Blue") to peer ID 1 (host)
 	NetworkManager.request_team.rpc_id(1, "Blue")
 
 func _on_team_red_button_pressed() -> void:

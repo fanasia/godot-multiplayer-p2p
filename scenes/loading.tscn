@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://rbabu6n3viaj"]
+
+[ext_resource type="Script" uid="uid://dfqjau22tm3m1" path="res://scripts/loading.gd" id="1_ir5ef"]
+
+[node name="Loading" type="Control" unique_id=92021528]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ir5ef")
+
+[node name="LoadingLabel" type="Label" parent="." unique_id=1093331848]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -11.5
+offset_right = 42.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Loading....."

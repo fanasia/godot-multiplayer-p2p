@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cpccokdgbiyy7"]
+
+[ext_resource type="Script" uid="uid://dmbs3y3wkctqm" path="res://scripts/map.gd" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://dkhceydipinss" path="res://scripts/game.gd" id="1_yqjtg"]
+
+[node name="Game" type="Node2D" unique_id=985372448]
+script = ExtResource("1_yqjtg")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2146031741]
+
+[node name="Map" type="Node2D" parent="." unique_id=295519076]
+script = ExtResource("1_uwrxv")
+
+[node name="Units" type="Node2D" parent="." unique_id=535794645]
+
+[node name="GameUI" type="CanvasLayer" parent="." unique_id=1582436420]
+
+[node name="TeamLabel" type="Label" parent="GameUI" unique_id=1562418264]
+offset_right = 40.0
+offset_bottom = 23.0

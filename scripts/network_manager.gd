@@ -7,6 +7,10 @@ var peer: ENetMultiplayerPeer
 
 var team_assignments: Dictionary = {}
 
+const TEAM_SELECTION_PATH := "res://scenes/team_selection.tscn"
+const LOADING_SCENE_PATH := "res://scenes/loading.tscn"
+const GAME_SCENE_PATH := "res://scenes/game.tscn"
+
 # create a server
 func host_game() -> void:
 	peer = ENetMultiplayerPeer.new()
@@ -14,6 +18,7 @@ func host_game() -> void:
 	if error != OK:
 		print("Failed to host: ", error)
 		return
+		
 
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -34,7 +39,7 @@ func join_game(ip_address: String) -> void:
 func _on_peer_connected(id: int) -> void:
 	print("A player connected with id: ", id)
 	# Host tells everyone (including itself) to move to team selection
-	change_scene_everyone.rpc("res://scenes/team_selection.tscn")
+	change_scene_everyone.rpc(TEAM_SELECTION_PATH)
 
 func _on_connected_to_server() -> void:
 	print("Successfully connected to host!")
@@ -52,6 +57,7 @@ func get_local_ip() -> String:
 			return ip
 	return "127.0.0.1"
 
+# # Called by a CLIENT (or host) button press, asking the host for a team
 @rpc("any_peer", "call_local", "reliable")
 func request_team(team: String) -> void:
 	# only host process this logic
@@ -72,8 +78,18 @@ func request_team(team: String) -> void:
 
 	confirm_team_assignment.rpc(team_assignments)
 	
+	_check_if_ready_to_start()
+	
 @rpc("authority", "call_local", "reliable")
 func confirm_team_assignment(new_assignments: Dictionary) -> void:
 	team_assignments = new_assignments
 
 	get_tree().call_group("team_selection_ui", "_on_team_assignments_updated", team_assignments)
+
+func _check_if_ready_to_start() -> void:
+	# We need exactly 2 players, each with a DIFFERENT team assigned
+	if team_assignments.size() == 2:
+		var teams_picked = team_assignments.values()
+		if teams_picked[0] != teams_picked[1]:
+			change_scene_everyone.rpc(LOADING_SCENE_PATH)
+			
