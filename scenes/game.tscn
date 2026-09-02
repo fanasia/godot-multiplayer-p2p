@@ -15,6 +15,47 @@ script = ExtResource("1_uwrxv")
 
 [node name="GameUI" type="CanvasLayer" parent="." unique_id=1582436420]
 
-[node name="TeamLabel" type="Label" parent="GameUI" unique_id=1562418264]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI" unique_id=1734056226]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TeamLabel" type="Label" parent="GameUI/HBoxContainer" unique_id=1562418264]
+layout_mode = 2
+
+[node name="TurnLabel" type="Label" parent="GameUI/HBoxContainer" unique_id=641658739]
+layout_mode = 2
+
+[node name="PhaseLabel" type="Label" parent="GameUI/HBoxContainer" unique_id=540452678]
+layout_mode = 2
+
+[node name="TurnIndicatorLabel" type="Label" parent="GameUI/HBoxContainer" unique_id=673595189]
+layout_mode = 2
+
+[node name="NextPhaseButton" type="Button" parent="GameUI/HBoxContainer" unique_id=802496174]
+layout_mode = 2
+text = "NEXT PHASE"
+
+[node name="WaitingOverlay" type="Control" parent="GameUI" unique_id=176220518]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DimBackground" type="ColorRect" parent="GameUI/WaitingOverlay" unique_id=2040519569]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6392157)
+
+[node name="WaitingLabel" type="Label" parent="GameUI/WaitingOverlay" unique_id=1401155845]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+text = "Waiting for opponent's turn...."
+
+[connection signal="pressed" from="GameUI/HBoxContainer/NextPhaseButton" to="." method="_on_next_phase_button_pressed"]

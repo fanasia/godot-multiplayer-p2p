@@ -11,6 +11,12 @@ const TEAM_SELECTION_PATH := "res://scenes/team_selection.tscn"
 const LOADING_SCENE_PATH := "res://scenes/loading.tscn"
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
 
+const PHASES := ["Movement", "Detection", "Identification", "Attack"]
+
+var current_turn_number: int = 1
+var current_turn_team: String = "Blue"
+var current_phase_index: int = 0
+
 # create a server
 func host_game() -> void:
 	peer = ENetMultiplayerPeer.new()
@@ -93,3 +99,48 @@ func _check_if_ready_to_start() -> void:
 		if teams_picked[0] != teams_picked[1]:
 			change_scene_everyone.rpc(LOADING_SCENE_PATH)
 			
+@rpc("any_peer", "call_local", "reliable")
+func request_next_phase() -> void:
+	if not multiplayer.is_server():
+		return
+
+	var requester_id = multiplayer.get_remote_sender_id()
+	if requester_id == 0:
+		requester_id = multiplayer.get_unique_id()
+
+	# check current turn
+	var requester_team = team_assignments.get(requester_id, "")
+	if requester_team != current_turn_team:
+		print("Not your turn, request denied.")
+		return
+
+	# update current phase
+	current_phase_index += 1
+	if current_phase_index >= PHASES.size():
+		current_phase_index = 0
+		current_turn_number += 1 #changing turn
+		current_turn_team = "Red" if current_turn_team == "Blue" else "Red"
+
+	_broadcast_turn_state()
+	
+func _broadcast_turn_state() -> void:
+	update_turn_state.rpc(current_turn_number, current_turn_team, current_phase_index)
+
+@rpc("authority", "call_local", "reliable")
+func update_turn_state(turn_number: int, turn_team: String, phase_index: int) -> void:
+	current_turn_number = turn_number
+	current_turn_team = turn_team
+	current_phase_index = phase_index
+	get_tree().call_group("game_ui", "_on_turn_state_updated", turn_number, turn_team, phase_index)
+
+@rpc("any_peer", "call_local", "reliable")
+func request_game_state() -> void:
+	if not multiplayer.is_server():
+		return
+
+	var requester_id = multiplayer.get_remote_sender_id()
+	if requester_id == 0:
+		requester_id = multiplayer.get_unique_id()
+
+	update_turn_state.rpc_id(requester_id, current_turn_number, current_turn_team, current_phase_index)
+	
